@@ -1,0 +1,63 @@
+Windows Registry Editor Version 5.00
+
+; Browsers
+
+[HKEY_LOCAL_MACHINE\Software\Policies\BraveSoftware]
+
+[HKEY_LOCAL_MACHINE\Software\Policies\BraveSoftware\Brave]
+
+[HKEY_LOCAL_MACHINE\Software\Policies\BraveSoftware\Brave\ExtensionInstallForcelist]
+"1"="cjpalhdlnbpafiamejdnhcphjbkeiagm;https://clients2.google.com/service/update2/crx"
+"2"="jfnangjojcioomickmmnfmiadkfhcdmd;https://clients2.google.com/service/update2/crx"
+"4"="gebbhagfogifgggkldgodflihgfeippi;https://clients2.google.com/service/update2/crx"
+"3"="kegphgaihkjoophpabchkmpaknehfamb;https://clients2.google.com/service/update2/crx"
+"5"="fihnjjcciajhdojfnbdddfaoknhalnja;https://clients2.google.com/service/update2/crx"
+
+[HKEY_LOCAL_MACHINE\Software\Policies\Google]
+
+[HKEY_LOCAL_MACHINE\Software\Policies\Google\Chrome]
+
+[HKEY_LOCAL_MACHINE\Software\Policies\Google\Chrome\ExtensionInstallForcelist]
+"5"="fihnjjcciajhdojfnbdddfaoknhalnja;https://clients2.google.com/service/update2/crx"
+"1"="cjpalhdlnbpafiamejdnhcphjbkeiagm;https://clients2.google.com/service/update2/crx"
+"2"="jfnangjojcioomickmmnfmiadkfhcdmd;https://clients2.google.com/service/update2/crx"
+"4"="gebbhagfogifgggkldgodflihgfeippi;https://clients2.google.com/service/update2/crx"
+"3"="kegphgaihkjoophpabchkmpaknehfamb;https://clients2.google.com/service/update2/crx"
+
+[HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Edge]
+
+[HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Edge\ExtensionInstallForcelist]
+"1"="cjpalhdlnbpafiamejdnhcphjbkeiagm;https://clients2.google.com/service/update2/crx"
+"5"="fihnjjcciajhdojfnbdddfaoknhalnja;https://clients2.google.com/service/update2/crx"
+"2"="jfnangjojcioomickmmnfmiadkfhcdmd;https://clients2.google.com/service/update2/crx"
+"3"="kegphgaihkjoophpabchkmpaknehfamb;https://clients2.google.com/service/update2/crx"
+"4"="gebbhagfogifgggkldgodflihgfeippi;https://clients2.google.com/service/update2/crx"
+
+[HKEY_LOCAL_MACHINE\Software\Policies\Mozilla]
+
+[HKEY_LOCAL_MACHINE\Software\Policies\Mozilla\Firefox]
+"ExtensionSettings"="{\"uBlock0@raymondhill.net\":{\"installation_mode\":\"force_installed\",\"install_url\":\"https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi\"},\"jfnangjojcioomickmmnfmiadkfhcdmd\":{\"installation_mode\":\"force_installed\",\"install_url\":\"https://clients2.google.com/service/update2/crx\"},\"cently@couponfollow.com\":{\"installation_mode\":\"force_installed\",\"install_url\":\"https://addons.mozilla.org/firefox/downloads/latest/cently-coupons-at-checkout/latest.xpi\"},\"return-youtube-dislike@example.com\":{\"installation_mode\":\"force_installed\",\"install_url\":\"https://addons.mozilla.org/firefox/downloads/latest/return-youtube-dislikes/latest.xpi\"},\"jid1-KKzOGWgsW3Ao4Q@jetpack\":{\"installation_mode\":\"force_installed\",\"install_url\":\"https://addons.mozilla.org/firefox/downloads/latest/i-dont-care-about-cookies/latest.xpi\"}}"
+
+[HKEY_LOCAL_MACHINE\Software\Policies\Mozilla\Zen]
+"ExtensionSettings"="{\"uBlock0@raymondhill.net\":{\"installation_mode\":\"force_installed\",\"install_url\":\"https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi\"},\"jfnangjojcioomickmmnfmiadkfhcdmd\":{\"installation_mode\":\"force_installed\",\"install_url\":\"https://clients2.google.com/service/update2/crx\"},\"cently@couponfollow.com\":{\"installation_mode\":\"force_installed\",\"install_url\":\"https://addons.mozilla.org/firefox/downloads/latest/cently-coupons-at-checkout/latest.xpi\"},\"return-youtube-dislike@example.com\":{\"installation_mode\":\"force_installed\",\"install_url\":\"https://addons.mozilla.org/firefox/downloads/latest/return-youtube-dislikes/latest.xpi\"},\"jid1-KKzOGWgsW3Ao4Q@jetpack\":{\"installation_mode\":\"force_installed\",\"install_url\":\"https://addons.mozilla.org/firefox/downloads/latest/i-dont-care-about-cookies/latest.xpi\"}}"
+
+[HKEY_LOCAL_MACHINE\Software\Policies\The Browser Company]
+
+[HKEY_LOCAL_MACHINE\Software\Policies\The Browser Company\Arc]
+
+[HKEY_LOCAL_MACHINE\Software\Policies\The Browser Company\Arc\ExtensionInstallForcelist]
+"5"="fihnjjcciajhdojfnbdddfaoknhalnja;https://clients2.google.com/service/update2/crx"
+"1"="cjpalhdlnbpafiamejdnhcphjbkeiagm;https://clients2.google.com/service/update2/crx"
+"2"="jfnangjojcioomickmmnfmiadkfhcdmd;https://clients2.google.com/service/update2/crx"
+"3"="kegphgaihkjoophpabchkmpaknehfamb;https://clients2.google.com/service/update2/crx"
+"4"="gebbhagfogifgggkldgodflihgfeippi;https://clients2.google.com/service/update2/crx"
+
+[HKEY_LOCAL_MACHINE\Software\Policies\Vivaldi]
+
+[HKEY_LOCAL_MACHINE\Software\Policies\Vivaldi\ExtensionInstallForcelist]
+"1"="cjpalhdlnbpafiamejdnhcphjbkeiagm;https://clients2.google.com/service/update2/crx"
+"2"="jfnangjojcioomickmmnfmiadkfhcdmd;https://clients2.google.com/service/update2/crx"
+"3"="kegphgaihkjoophpabchkmpaknehfamb;https://clients2.google.com/service/update2/crx"
+"4"="gebbhagfogifgggkldgodflihgfeippi;https://clients2.google.com/service/update2/crx"
+"5"="fihnjjcciajhdojfnbdddfaoknhalnja;https://clients2.google.com/service/update2/crx"
+
