@@ -1,12 +1,12 @@
-# Midas.ps1 by Gorstak
-# Run as Administrator. Logs to C:\Temp\MidasLog.txt
+# Midas.ps1 by Gorstak (with logging)
+# Run as Administrator. Logs to C:\Temp\SecurityLog.txt
 
 # Logging function
 function Write-Log {
     param([string]$Message)
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logEntry = "[$timestamp] $Message"
-    $logPath = "C:\Temp\MidasLog.txt"
+    $logPath = "C:\Temp\SecurityLog.txt"
     if (-not (Test-Path "C:\Temp")) { New-Item -Path "C:\Temp" -ItemType Directory -Force | Out-Null }
     Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     Write-Host $logEntry  # Also to console for initial run
@@ -38,15 +38,14 @@ function Register-SystemLogonScript {
         return
     }
 
-    # Configure the scheduled task to run as the logged-on user and hide the window
-    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-WindowStyle Hidden -ExecutionPolicy Bypass -File `"$targetPath`""
+    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"$targetPath`""
     $trigger = New-ScheduledTaskTrigger -AtLogOn
-    $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Highest
+    $principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
 
     try {
         Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false -ErrorAction SilentlyContinue
         Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Principal $principal
-        Write-Log "Scheduled task '$TaskName' created to run at user logon for user '$env:USERNAME'."
+        Write-Log "Scheduled task '$TaskName' created to run at user logon under SYSTEM."
     } catch {
         Write-Log "Failed to register task: $_"
     }
@@ -72,37 +71,24 @@ $action = {
         if ($process) {
             $path = $process.MainModule.FileName
             if ($path) {
-                # Get the current user's profile path and Program Files paths
-                $userProfile = $env:USERPROFILE
-                $programFiles = "C:\Program Files"
-                $programFilesX86 = "C:\Program Files (x86)"
-
-                # Check if the file path is within the user's profile directory or Program Files
-                if ($path -like "$userProfile*" -or $path -like "$programFiles*" -or $path -like "$programFilesX86*") {
-                    $location = if ($path -like "$userProfile*") { "user folder ($userProfile)" }
-                                elseif ($path -like "$programFiles*") { "Program Files" }
-                                else { "Program Files (x86)" }
-                    Write-Log "Full path resolved: $path (within $location)"
-
-                    # Run commands and capture output
-                    $takeownOut = & takeown /f "$path" /A 2>&1
-                    Write-Log "takeown output: $takeownOut"
-                    
-                    $resetOut = & icacls "$path" /reset 2>&1
-                    Write-Log "icacls /reset output: $resetOut"
-                    
-                    $inheritOut = & icacls "$path" /inheritance:r 2>&1
-                    Write-Log "icacls /inheritance:r output: $inheritOut"
-                    
-                    $grantOut = & icacls "$path" /grant:r "*S-1-2-1:F" 2>&1
-                    Write-Log "icacls /grant output: $grantOut"
-                    
-                    # Verify final perms
-                    $finalPerms = & icacls "$path" 2>&1
-                    Write-Log "Final perms for $path`: $finalPerms"
-                } else {
-                    Write-Log "Path $path is outside user folder ($userProfile), Program Files, or Program Files (x86). Skipping."
-                }
+                Write-Log "Full path resolved: $path"
+                
+                # Run commands and capture output
+                $takeownOut = & takeown /f "$path" /A 2>&1
+                Write-Log "takeown output: $takeownOut"
+                
+                $resetOut = & icacls "$path" /reset 2>&1
+                Write-Log "icacls /reset output: $resetOut"
+                
+                $inheritOut = & icacls "$path" /inheritance:r 2>&1
+                Write-Log "icacls /inheritance:r output: $inheritOut"
+                
+                $grantOut = & icacls "$path" /grant:r "*S-1-2-1:F" 2>&1
+                Write-Log "icacls /grant output: $grantOut"
+                
+                # Verify final perms
+                $finalPerms = & icacls "$path" 2>&1
+                Write-Log "Final perms for $path`: $finalPerms"
             } else {
                 Write-Log "Failed to get MainModule.FileName for PID $pid"
             }
