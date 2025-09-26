@@ -72,23 +72,38 @@ $action = {
             $path = $process.MainModule.FileName
             if ($path) {
                 Write-Log "Full path resolved: $path"
-                
-                # Run commands and capture output
-                $takeownOut = & takeown /f "$path" /A 2>&1
-                Write-Log "takeown output: $takeownOut"
-                
-                $resetOut = & icacls "$path" /reset 2>&1
-                Write-Log "icacls /reset output: $resetOut"
-                
-                $inheritOut = & icacls "$path" /inheritance:r 2>&1
-                Write-Log "icacls /inheritance:r output: $inheritOut"
-                
-                $grantOut = & icacls "$path" /grant:r "*S-1-2-1:F" 2>&1
-                Write-Log "icacls /grant output: $grantOut"
-                
-                # Verify final perms
-                $finalPerms = & icacls "$path" 2>&1
-                Write-Log "Final perms for $path`: $finalPerms"
+
+                # Check if the path belongs to Program Files or the Current User directory
+
+                # Retrieve the current logged-in user profile path dynamically
+                $currentUser = (Get-WmiObject -Class Win32_ComputerSystem).UserName
+                $currentUserPath = "C:\Users\$($currentUser.Split('\')[1])"  # Get user profile path dynamically
+
+                $programFilesPath = "C:\Program Files"
+                $programFilesX86Path = "C:\Program Files (x86)"
+
+                if ($path.StartsWith($programFilesPath) -or $path.StartsWith($programFilesX86Path) -or $path.StartsWith($currentUserPath)) {
+                    Write-Log "Path is valid for modification: $path"
+                    
+                    # Run commands and capture output
+                    $takeownOut = & takeown /f "$path" /A 2>&1
+                    Write-Log "takeown output: $takeownOut"
+                    
+                    $resetOut = & icacls "$path" /reset 2>&1
+                    Write-Log "icacls /reset output: $resetOut"
+                    
+                    $inheritOut = & icacls "$path" /inheritance:r 2>&1
+                    Write-Log "icacls /inheritance:r output: $inheritOut"
+                    
+                    $grantOut = & icacls "$path" /grant:r "*S-1-2-1:F" 2>&1
+                    Write-Log "icacls /grant output: $grantOut"
+                    
+                    # Verify final perms
+                    $finalPerms = & icacls "$path" 2>&1
+                    Write-Log "Final perms for $path`: $finalPerms"
+                } else {
+                    Write-Log "Skipping file $path. It is not located in Program Files or the Current User directory."
+                }
             } else {
                 Write-Log "Failed to get MainModule.FileName for PID $pid"
             }
