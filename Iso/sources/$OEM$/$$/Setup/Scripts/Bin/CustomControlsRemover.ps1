@@ -5,6 +5,49 @@ param (
 # Import required module
 Import-Module -Name Microsoft.PowerShell.Management
 
+function Register-SystemLogonScript {
+    param ([string]$TaskName = "RunCCRAtLogon")
+
+    $scriptSource = $MyInvocation.MyCommand.Path
+    if (-not $scriptSource) { $scriptSource = $PSCommandPath }
+    if (-not $scriptSource) {
+        Write-Log "Error: Could not determine script path."
+        return
+    }
+
+    $targetFolder = "C:\Windows\Setup\Scripts\Bin"
+    $targetPath = Join-Path $targetFolder (Split-Path $scriptSource -Leaf)
+
+    if (-not (Test-Path $targetFolder)) {
+        New-Item -Path $targetFolder -ItemType Directory -Force | Out-Null
+        Write-Log "Created folder: $targetFolder"
+    }
+
+    try {
+        Copy-Item -Path $scriptSource -Destination $targetPath -Force -ErrorAction Stop
+        Write-Log "Copied script to: $targetPath"
+    } catch {
+        Write-Log "Failed to copy script: $_"
+        return
+    }
+
+    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"$targetPath`""
+    $trigger = New-ScheduledTaskTrigger -AtLogOn
+    $principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
+
+    try {
+        Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false -ErrorAction SilentlyContinue
+        Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Principal $principal
+        Write-Log "Scheduled task '$TaskName' created to run at user logon under SYSTEM."
+    } catch {
+        Write-Log "Failed to register task: $_"
+    }
+}
+
+# Run the function
+Register-SystemLogonScript
+Write-Log "Script setup complete. Starting WMI monitoring..."
+
 # Define base registry path for WOW6432Node CLSIDs
 $basePath = "HKLM:\SOFTWARE\WOW6432Node\Classes\CLSID"
 $hkcrBasePath = "HKCR:\WOW6432Node\CLSID"
