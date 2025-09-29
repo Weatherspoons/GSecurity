@@ -99,6 +99,11 @@ function Sanitize-DesktopFolders {
     }
 }
 
+function Sanitize-UserOOBE {
+	takeown /f %windir%\System32\Oobe\useroobe.dll /A
+	icacls %windir%\System32\Oobe\useroobe.dll /reset
+	icacls %windir%\System32\Oobe\useroobe.dll /inheritance:r
+
 function Start-WmiMonitoring {
     Write-Log "Starting WMI monitoring..."
 
@@ -212,11 +217,7 @@ function Start-WmiMonitoring {
 
 # Main execution
 Write-Log "Starting Midas script..."
-
-# Run desktop sanitization
 Sanitize-DesktopFolders
-
-# Start WMI monitoring
+Sanitize-UserOOBE
 Start-WmiMonitoring
-
 Write-Log "Midas script completed."
