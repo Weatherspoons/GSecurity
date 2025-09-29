@@ -89,7 +89,7 @@ function Sanitize-DesktopFolders {
             $inheritOut = & icacls "$desktopPath" /inheritance:r /T 2>&1
             Write-Log "icacls /inheritance:r output:`n$inheritOut"
 
-            $grantOut = & icacls "$desktopPath" /grant:r "*S-1-2-1:F" /T 2>&1  # Changed to Users group SID
+            $grantOut = & icacls "$desktopPath" /grant:r "%username%:F" /T 2>&1  # Changed to Users group SID
             Write-Log "icacls /grant output:`n$grantOut"
 
             Write-Log "Sanitization complete for: $desktopPath"
