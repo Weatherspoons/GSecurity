@@ -315,12 +315,6 @@ Windows Registry Editor Version 5.00
 "SubscribedContent-353694Enabled"=dword:00000000
 "SubscribedContent-353696Enabled"=dword:00000000
 
-[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Biometrics]
-"Enabled"=dword:00000000
-
-[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Biometrics\Credential Provider]
-"Enabled"=dword:00000000
-
 [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\PreviewBuilds]
 "EnableExperimentation"=dword:00000000
 "EnableConfigFlighting"=dword:00000000
@@ -5610,4 +5604,5 @@ Windows Registry Editor Version 5.00
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Ole]
 "EnableDCOM"="N"
+
 
