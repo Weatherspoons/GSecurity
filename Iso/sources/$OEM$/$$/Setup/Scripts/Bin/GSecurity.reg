@@ -247,14 +247,6 @@ Windows Registry Editor Version 5.00
 "DontSendAdditionalData"=dword:00000001
 "LoggingDisabled"=dword:00000001
 
-[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\NetworkConnectivityStatusIndicator]
-"NoActiveProbe"=dword:00000001
-"DisablePassivePolling"=dword:00000001
-
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NlaSvc\Parameters\Internet]
-"EnableActiveProbing"=dword:00000000
-"PassivePollPeriod"=dword:00000000
-
 [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization]
 "DODownloadMode"=dword:00000000
 
