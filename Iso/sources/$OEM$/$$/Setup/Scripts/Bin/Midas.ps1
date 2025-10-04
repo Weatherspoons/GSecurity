@@ -1,4 +1,4 @@
-# GSecurity.ps1
+# Midas.ps1
 # Author: Gorstak
 
 # Logging function
