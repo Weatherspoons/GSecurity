@@ -10,56 +10,6 @@ function Write-Log {
     Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     Write-Host $logEntry  # Also to console for initial run
 }
-function Register-SystemLogonScript {
-    param (
-        [string]$TaskName = "Midas"
-    )
-
-    # Define paths
-    $scriptSource = $MyInvocation.MyCommand.Path
-    if (-not $scriptSource) {
-        $scriptSource = $PSCommandPath
-        if (-not $scriptSource) {
-            Write-Output "Error: Could not determine script path."
-            return
-        }
-    }
-
-    $targetFolder = "C:\Windows\Setup\Scripts\Bin"
-    $targetPath = Join-Path $targetFolder (Split-Path $scriptSource -Leaf)
-
-    # Create required folders
-    if (-not (Test-Path $targetFolder)) {
-        New-Item -Path $targetFolder -ItemType Directory -Force | Out-Null
-        Write-Output "Created folder: $targetFolder"
-    }
-
-    # Copy the script
-    try {
-        Copy-Item -Path $scriptSource -Destination $targetPath -Force -ErrorAction Stop
-        Write-Output "Copied script to: $targetPath"
-    } catch {
-        Write-Output "Failed to copy script: $_"
-        return
-    }
-
-    # Define the scheduled task action and trigger
-    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -WindowStyle Hidden -File `"$targetPath`""
-    $trigger = New-ScheduledTaskTrigger -AtStartup
-    $principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
-
-    # Register the task
-    try {
-        Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false -ErrorAction SilentlyContinue
-        Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Principal $principal
-        Write-Output "Scheduled task '$TaskName' created to run at system startup under SYSTEM."
-    } catch {
-        Write-Output "Failed to register task: $_"
-    }
-}
-
-Register-SystemLogonScript
-Write-Log "Script setup complete. Starting FileSystemWatcher monitoring..."
 
 # Define allowed paths to monitor
 $allowedPaths = @(
@@ -124,4 +74,5 @@ Start-Job -ScriptBlock {
 while ($true) {
     Start-Sleep -Seconds 1
     }
+
 }
